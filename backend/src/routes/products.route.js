@@ -1,5 +1,6 @@
 const route = require('express').Router();
+const { productsController } = require('../controllers');
 
-route.get('/', );
+route.get('/', productsController.findAllProducts);
 
 module.exports = route;
