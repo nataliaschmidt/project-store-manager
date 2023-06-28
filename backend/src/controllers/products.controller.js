@@ -6,6 +6,18 @@ const findAllProducts = async (_req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
+const findProductById = async (req, res) => {
+  try {
+    const productId = Number(req.params.id);
+    const { status, data } = await productsService.findById(productId);
+    console.log(data);
+    return res.status(mapStatusHTTP(status)).json(data);
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
 module.exports = {
   findAllProducts,
+  findProductById,
 };

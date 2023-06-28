@@ -28,13 +28,31 @@ const productsFromModel = [
   },
 ];
 
+const productByIdFromModel = {
+  id: 1,
+  name: 'Martelo de Thor',
+};
+
 const productsFromServiceSuccessful = {
   status: 'SUCCESSFUL',
   data: productsFromModel,
+};
+
+const productsIDFromServiceSuccessful = {
+  status: 'SUCCESSFUL',
+  data: productByIdFromModel,
+};
+
+const productsFromServiceNotFound = {
+  status: 'NOT_FOUND',
+  data: { message: 'Product not found' },
 };
 
 module.exports = {
   productsFromDB,
   productsFromModel,
   productsFromServiceSuccessful,
+  productByIdFromModel,
+  productsFromServiceNotFound,
+  productsIDFromServiceSuccessful,
 };
