@@ -51,6 +51,18 @@ sinon.stub(productModel, 'findyById').resolves(createdProduct);
     expect(responseService.data).to.be.an('object');
     expect(responseService.data).to.be.deep.equal(createdProduct);
   });
+
+  it('Erro ao inserir um novo produto com o o nome menor do que 5 caracteres', async function () {
+    const newProduct = {
+      name: 'Pr',
+    };
+    
+    const responseService = await productsService.insert(newProduct);
+    
+    expect(responseService.status).to.be.equal('INVALID_VALUE');
+    expect(responseService.data).to.be.an('object');
+    expect(responseService.data).to.be.deep.equal({ message: '"name" length must be at least 5 characters long' });
+  });
   afterEach(function () {
     sinon.restore();
   });
