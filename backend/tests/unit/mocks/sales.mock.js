@@ -45,7 +45,33 @@ const salesSuccessful = {
   data: salesFromModel,
 };
 
+const salesFoundById = [
+  {
+    date: '2023-06-29T13:18:56.000Z',
+    productId: 1,
+    quantity: 5,
+  },
+  {
+    date: '2023-06-29T13:18:56.000Z',
+    productId: 2,
+    quantity: 10,
+  },
+];
+
+const salesByIdSuccessful = {
+  status: 'SUCCESSFUL',
+  data: salesFoundById,
+};
+
+const salesByIdNotFound = {
+  status: 'NOT_FOUND',
+  data: { message: 'Sale not found' },
+};
+
 module.exports = {
   salesFromModel,
   salesSuccessful,
+  salesFoundById,
+  salesByIdSuccessful,
+  salesByIdNotFound,
 };

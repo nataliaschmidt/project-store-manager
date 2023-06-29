@@ -16,6 +16,29 @@ describe('Realizando testes - SALES SERVICE', function () {
     expect(responseService.data).to.have.lengthOf(3);
     expect(responseService.data).to.be.deep.equal(salesFromModel);
   });
+
+  it('Recuperando vendas por id de vendas com sucesso', async function () {
+    sinon.stub(salesModel, 'findById').resolves(salesFromModel);
+
+    const saleId = 1;
+    const responseService = await salesService.findById(saleId);
+    
+    expect(responseService.status).to.be.equal('SUCCESSFUL');
+    expect(responseService.data).to.be.an('array');
+    expect(responseService.data).to.be.deep.equal(salesFromModel);
+  });
+
+  it('Recuperando um produto por id sem sucesso', async function () {
+    sinon.stub(salesModel, 'findById').resolves([]);
+
+    const saleId = 10;
+    const responseService = await salesService.findById(saleId);
+    
+    expect(responseService.status).to.be.equal('NOT_FOUND');
+    expect(responseService.data).to.be.an('object');
+    expect(responseService.data).to.be.deep.equal({ message: 'Sale not found' });
+  });
+
   afterEach(function () {
     sinon.restore();
   });
