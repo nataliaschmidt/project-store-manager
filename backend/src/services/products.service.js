@@ -10,7 +10,6 @@ const findAll = async () => {
 
 const findById = async (productId) => {
   const product = await productModel.findyById(productId);
-  console.log(product);
   if (product) {
     return {
       status: 'SUCCESSFUL',

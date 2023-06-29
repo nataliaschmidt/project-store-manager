@@ -8,6 +8,23 @@ const findAll = async () => {
   };
 };
 
+const findById = async (salesId) => {
+const salesFoundById = await salesModel.findById(salesId);
+
+if (salesFoundById.length !== 0) {
+return {
+  status: 'SUCCESSFUL',
+  data: salesFoundById,
+};
+}
+
+return {
+  status: 'NOT_FOUND',
+  data: { message: 'Sale not found' },
+};
+};
+
 module.exports = {
   findAll,
+  findById,
 };
