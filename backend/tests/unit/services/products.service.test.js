@@ -17,7 +17,7 @@ describe('Realizando testes - PRODUCTS SERVICE', function () {
     expect(responseService.data).to.be.deep.equal(productsFromModel);
   });
   it('Recuperando um produto por id com sucesso', async function () {
-    sinon.stub(productModel, 'findyById').resolves(productByIdFromModel);
+    sinon.stub(productModel, 'findById').resolves(productByIdFromModel);
 
     const id = 1;
     const responseService = await productsService.findById(id);
@@ -27,7 +27,7 @@ describe('Realizando testes - PRODUCTS SERVICE', function () {
     expect(responseService.data).to.be.deep.equal(productByIdFromModel);
   });
   it('Recuperando um produto por id sem sucesso', async function () {
-    sinon.stub(productModel, 'findyById').resolves(undefined);
+    sinon.stub(productModel, 'findById').resolves(undefined);
 
     const id = 100;
     const responseService = await productsService.findById(id);
@@ -39,7 +39,7 @@ describe('Realizando testes - PRODUCTS SERVICE', function () {
 
   it('Inserindo um novo produto', async function () {
     sinon.stub(productModel, 'insert').resolves(4);
-sinon.stub(productModel, 'findyById').resolves(createdProduct);
+sinon.stub(productModel, 'findById').resolves(createdProduct);
 
     const newProduct = {
       name: 'ProdutoX',

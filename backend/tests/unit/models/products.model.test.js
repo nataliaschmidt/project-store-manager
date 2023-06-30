@@ -19,7 +19,7 @@ describe('Realizando testes - PRODUCTS MODEL', function () {
 
     const id = 1;
 
-    const responseModel = await productModel.findyById(id);
+    const responseModel = await productModel.findById(id);
 
     expect(responseModel).to.be.an('object');
     expect(responseModel).to.be.deep.equal(productByIdFromModel);
