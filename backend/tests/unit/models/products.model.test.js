@@ -52,6 +52,16 @@ describe('Realizando testes - PRODUCTS MODEL', function () {
     expect(responseModel).to.be.deep.equal(updatedProduct);
   });
 
+  it('Deletando um produto', async function () {
+    sinon.stub(connection, 'execute').resolves([{ insertId: 1 }]);
+
+    const productId = 1;
+
+    const responseModel = await productModel.remove(productId);
+
+    expect(responseModel).to.be.deep.equal(undefined);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

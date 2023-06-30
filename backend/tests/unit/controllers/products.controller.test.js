@@ -7,7 +7,7 @@ chai.use(sinonChai);
 
 const { productsService } = require('../../../src/services');
 const { productsController } = require('../../../src/controllers');
-const { productsFromServiceSuccessful, productsFromModel, productsIDFromServiceSuccessful, productsFromServiceNotFound, productFromServiceCreated, createdProduct, productFromServiceCreatedInvalid, updatedProduct, updateProductSuccessful } = require('../mocks/products.mock');
+const { productsFromServiceSuccessful, productsFromModel, productsIDFromServiceSuccessful, productsFromServiceNotFound, productFromServiceCreated, createdProduct, productFromServiceCreatedInvalid, updatedProduct, updateProductSuccessful, updateProductNotFound } = require('../mocks/products.mock');
 
 describe('Realizando testes - PRODUCTS CONTROLLER', function () {
   it('Recuperando todos os produtos com sucesso - status 200', async function () {
@@ -79,19 +79,33 @@ describe('Realizando testes - PRODUCTS CONTROLLER', function () {
     expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
   });
 
-  // it('Atualizando um produto - status 200', async function () {
-  //   sinon.stub(productsService, 'insert').resolves(updateProductSuccessful);
+  it('Atualizando um produto - status 200', async function () {
+    sinon.stub(productsService, 'update').resolves(updateProductSuccessful);
 
-  //   const req = { params: { id: 10 }, body: { name: 'Martelo do Batman' } };
-  //   const res = {
-  //     status: sinon.stub().returnsThis(),
-  //     json: sinon.stub(),
-  //   };
+    const req = { params: { id: 1 }, body: { name: 'Martelo do Batman' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
 
-  //   await productsController.update(req, res);
-  //   expect(res.status).to.have.been.calledWith(200);
-  //   expect(res.json).to.have.been.calledWith(updatedProduct);
-  // });
+    await productsController.update(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(updatedProduct);
+  });
+
+  it('Atualizando um produto com id invalido - status 200', async function () {
+    sinon.stub(productsService, 'update').resolves(updateProductNotFound);
+
+    const req = { params: { id: 10 }, body: { name: 'Martelo do Batman' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.update(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith(updateProductNotFound.data);
+  });
 
   it('Erro ao atualizar um novo produto com o o nome menor do que 5 caracteres', async function () {
     sinon.stub(productsService, 'insert').resolves(productFromServiceCreatedInvalid);
@@ -105,6 +119,33 @@ describe('Realizando testes - PRODUCTS CONTROLLER', function () {
     await productsController.update(req, res);
     expect(res.status).to.have.been.calledWith(422);
     expect(res.json).to.have.been.calledWith(sinon.match.has('message'));
+  });
+
+  it('Deletando um produto - status 204', async function () {
+    sinon.stub(productsService, 'remove').resolves({ status: 'DELETED' });
+
+    const req = { params: { id: 1 }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.remove(req, res);
+    expect(res.status).to.have.been.calledWith(204);
+  });
+  
+  it('Deletando um produto inexistente - status 404', async function () {
+    sinon.stub(productsService, 'remove').resolves(updateProductNotFound);
+
+    const req = { params: { id: 10 }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.remove(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith(updateProductNotFound.data);
   });
 
   afterEach(function () {

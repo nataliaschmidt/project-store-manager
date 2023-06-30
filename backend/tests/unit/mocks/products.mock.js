@@ -75,6 +75,11 @@ const updateProductSuccessful = {
   data: updatedProduct,
 };
 
+const updateProductNotFound = {
+  status: 'NOT_FOUND',
+  data: { message: 'Product not found' },
+};
+
 module.exports = {
   productsFromDB,
   productsFromModel,
@@ -88,4 +93,5 @@ module.exports = {
   productFromServiceCreatedInvalid,
   updatedProduct,
   updateProductSuccessful,
+  updateProductNotFound,
 };
