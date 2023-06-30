@@ -11,7 +11,7 @@ const [products] = await connection.execute(query);
 return camelize(products);
 };
 
-const findyById = async (productId) => {
+const findById = async (productId) => {
 const query = 'SELECT * FROM products WHERE id = ?';
 
 const [[product]] = await connection.execute(query, [productId]);
@@ -39,7 +39,7 @@ return connection.execute(query, [...Object.values(productToUpdate), productId])
 
 module.exports = {
   findAll,
-  findyById,
+  findById,
   insert,
   update,
 };

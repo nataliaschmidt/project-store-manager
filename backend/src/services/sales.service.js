@@ -1,4 +1,4 @@
-const { salesModel } = require('../models'); // importar novamente o productModel
+const { salesModel, productModel } = require('../models'); // importar novamente o productModel
 const schema = require('./validations/validationsInputValues');
 
 const findAll = async () => {
@@ -31,15 +31,15 @@ const insert = async (newSale) => {
     return { status: errorQuantity.status, data: errorQuantity.message };
   }
 
-  // const foundProduct = await Promise.all(newSale.map(async ({ productId, _quantity }) => {
-  //   const checkExistProduct = await productModel.findyById(productId);
-  //   return checkExistProduct;
-  // }));
+  const foundProduct = await Promise.all(newSale.map(async ({ productId, _quantity }) => {
+    const checkExistProduct = await productModel.findById(productId);
+    return checkExistProduct;
+  }));
 
-  // if (foundProduct.includes(undefined)) {
-  //   return { status: 'NOT_FOUND', data: { message: 'Product not found' },
-  //   };
-  // }
+  if (foundProduct.includes(undefined)) {
+    return { status: 'NOT_FOUND', data: { message: 'Product not found' },
+    };
+  }
 
   const salesId = await salesModel.insertSales(newSale);
   return { status: 'CREATED', data: { id: salesId, itemsSold: newSale },

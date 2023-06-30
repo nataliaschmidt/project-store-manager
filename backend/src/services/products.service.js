@@ -10,7 +10,7 @@ const findAll = async () => {
 };
 
 const findById = async (productId) => {
-  const product = await productModel.findyById(productId);
+  const product = await productModel.findById(productId);
   if (product) {
     return {
       status: 'SUCCESSFUL',
@@ -26,7 +26,7 @@ const insert = async (newProduct) => {
 
   const insertId = await productModel.insert(newProduct);
 
-  const newProductInserted = await productModel.findyById(insertId);
+  const newProductInserted = await productModel.findById(insertId);
   if (newProductInserted) {
     return {
       status: 'CREATED',
@@ -41,7 +41,7 @@ const update = async (productId, productToUpdate) => {
 
   await productModel.update(productId, productToUpdate);
 
-  const updatedProduct = await productModel.findyById(productId);
+  const updatedProduct = await productModel.findById(productId);
   if (updatedProduct) {
     return { status: 'SUCCESSFUL', data: updatedProduct };
   } return { status: 'NOT_FOUND', data: { message: 'Product not found' } };
