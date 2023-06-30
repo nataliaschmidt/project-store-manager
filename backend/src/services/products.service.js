@@ -49,7 +49,7 @@ const update = async (productId, productToUpdate) => {
 
 const remove = async (productId) => {
   const isProductValid = await productModel.findById(productId);
-
+console.log(isProductValid);
   if (!isProductValid) {
     return { status: 'NOT_FOUND', data: { message: 'Product not found' } };
   }

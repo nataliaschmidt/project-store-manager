@@ -47,6 +47,16 @@ describe('Realizando testes - SALES MODEL', function () {
     expect(responseModel).to.be.deep.equal(4);
   });
 
+  it('Deletando uma venda', async function () {
+    sinon.stub(connection, 'execute').resolves([{ insertId: 1 }]);
+
+    const saleId = 1;
+
+    const responseModel = await salesModel.remove(saleId);
+
+    expect(responseModel).to.be.deep.equal(undefined);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

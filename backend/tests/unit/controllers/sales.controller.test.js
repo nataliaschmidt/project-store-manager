@@ -7,7 +7,7 @@ chai.use(sinonChai);
 
 const { salesService } = require('../../../src/services');
 const { salesController } = require('../../../src/controllers');
-const { salesFromModel, salesSuccessful, salesByIdSuccessful, salesFoundById, salesByIdNotFound, newSalesCreated, newSaleFromService } = require('../mocks/sales.mock');
+const { salesFromModel, salesSuccessful, salesByIdSuccessful, salesFoundById, salesByIdNotFound, newSalesCreated, newSaleFromService, saleNotFound } = require('../mocks/sales.mock');
 
 describe('Realizando testes - SALES CONTROLLER', function () {
   it('Recuperando todas as vendas com sucesso - status 200', async function () {
@@ -75,6 +75,33 @@ const newSale = [
     await salesController.insert(req, res);
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith(newSaleFromService);
+  });
+
+  it('Deletando uma venda - status 204', async function () {
+    sinon.stub(salesService, 'remove').resolves({ status: 'DELETED' });
+
+    const req = { params: { id: 1 }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.remove(req, res);
+    expect(res.status).to.have.been.calledWith(204);
+  });
+  
+  it('Deletando uma venda inexistente - status 404', async function () {
+    sinon.stub(salesService, 'remove').resolves(saleNotFound);
+
+    const req = { params: { id: 10 }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.remove(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith(saleNotFound.data);
   });
 
   afterEach(function () {

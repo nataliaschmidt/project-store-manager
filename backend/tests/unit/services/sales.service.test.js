@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const { salesModel, productModel } = require('../../../src/models');
 const { salesService } = require('../../../src/services');
 
-const { salesFromModel, newSaleFromService } = require('../mocks/sales.mock');
+const { salesFromModel, newSaleFromService, salesFoundById } = require('../mocks/sales.mock');
 
 describe('Realizando testes - SALES SERVICE', function () {
   it('Recuperando todas as vendas com sucesso', async function () {
@@ -57,6 +57,27 @@ describe('Realizando testes - SALES SERVICE', function () {
     expect(responseService.status).to.be.equal('CREATED');
     expect(responseService.data).to.be.an('object');
     expect(responseService.data).to.be.deep.equal(newSaleFromService);
+  });
+
+  it('Deletando uma venda', async function () {
+    sinon.stub(salesModel, 'findById').resolves(salesFoundById);
+    sinon.stub(salesModel, 'remove').resolves();
+    const salesId = 1;
+
+    const responseService = await salesService.remove(salesId);
+
+    expect(responseService.status).to.be.equal('DELETED');
+  });
+
+  it('Deletando uma venda inexistente', async function () {
+    sinon.stub(salesModel, 'findById').resolves([]);
+    const saleId = 10;
+
+    const responseService = await salesService.remove(saleId);
+
+    expect(responseService.status).to.be.equal('NOT_FOUND');
+    expect(responseService.data).to.be.an('object');
+    expect(responseService.data).to.be.deep.equal({ message: 'Sale not found' });
   });
 
   afterEach(function () {

@@ -46,8 +46,19 @@ const insert = async (newSale) => {
   };
 };
 
+const remove = async (saleId) => {
+  const isSaleValid = await salesModel.findById(saleId);
+  if (isSaleValid.length < 1) {
+    return { status: 'NOT_FOUND', data: { message: 'Sale not found' } };
+  }
+
+  await salesModel.remove(saleId);
+  return { status: 'DELETED' };
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
+  remove,
 };

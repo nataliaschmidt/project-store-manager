@@ -1,24 +1,3 @@
-// const salesFromDB = [
-//   {
-//     sale_id: 1,
-//     date: '2023-06-28T23:40:51.000Z',
-//     product_id: 1,
-//     quantity: 5,
-//   },
-//   {
-//     sale_id: 1,
-//     date: '2023-06-28T23:40:51.000Z',
-//     product_id: 2,
-//     quantity: 10,
-//   },
-//   {
-//     sale_id: 2,
-//     date: '2023-06-28T23:40:51.000Z',
-//     product_id: 3,
-//     quantity: 15,
-//   },
-// ];
-
 const salesFromModel = [
   {
     saleId: 1,
@@ -89,6 +68,11 @@ status: 'CREATED',
 data: newSaleFromService,
 };
 
+const saleNotFound = {
+  status: 'NOT_FOUND',
+  data: { message: 'Sale not found' },
+};
+
 module.exports = {
   salesFromModel,
   salesSuccessful,
@@ -98,4 +82,5 @@ module.exports = {
   salesIdFromDB,
   newSaleFromService,
   newSalesCreated,
+  saleNotFound,
 };

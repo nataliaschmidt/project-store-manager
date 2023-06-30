@@ -26,8 +26,19 @@ const insert = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  try {
+    const saleId = Number(req.params.id);
+    const { status, data } = await salesService.remove(saleId);
+    return res.status(mapStatusHTTP(status)).json(data);
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
 module.exports = {
   findAllSales,
   findById,
   insert,
+  remove,
 };
