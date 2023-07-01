@@ -56,9 +56,65 @@ const remove = async (saleId) => {
   return { status: 'DELETED' };
 };
 
+const validateIdProdutc = async (idProduct) => {
+  const foundProduct = await productModel.findById(idProduct);
+  if (!foundProduct) {
+    return { status: 'NOT_FOUND', data: { message: 'Product not found in sale' } };
+  }
+  return foundProduct;
+};
+
+const validateIdSale = async (idSale) => {
+  const foundSale = await salesModel.findById(idSale);
+  if (foundSale.length < 1) {
+    return { status: 'NOT_FOUND', data: { message: 'Sale not found' } };
+  }
+  return foundSale;
+};
+
+const validateQuantity = (quantity) => {
+  if (quantity === 0) {
+    return { status: 'INVALID_VALUE',
+    data: { message: '"quantity" must be greater than or equal to 1' } };
+  }
+  
+  if (!quantity) {
+    return { status: 'REQUIRED_VALUE', data: { message: '"quantity" is required' } };
+  }
+
+  if (quantity.length <= 0) {
+    return { status: 'INVALID_VALUE',
+    data: { message: '"quantity" must be greater than or equal to 1' } };
+  }
+};
+
+const updateQuantity = async (updateQuantityInfos) => {
+const errorQuantity = validateQuantity(updateQuantityInfos.quantity);
+if (errorQuantity) {
+  return errorQuantity; 
+}
+const foundProduct = await validateIdProdutc(updateQuantityInfos.productId);
+if (foundProduct.status === 'NOT_FOUND') {
+  return foundProduct;
+}
+const foundSale = await validateIdSale(updateQuantityInfos.saleId);
+if (foundSale.status === 'NOT_FOUND') {
+  return foundSale;
+}
+await salesModel.updateQuantity(updateQuantityInfos);
+return { status: 'SUCCESSFUL',
+data: { 
+  date: new Date(),
+  productId: updateQuantityInfos.productId,
+  quantity: updateQuantityInfos.quantity,
+  saleId: updateQuantityInfos.saleId,
+ } };
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
   remove,
+  updateQuantity,
 };
