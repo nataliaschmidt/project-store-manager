@@ -43,10 +43,19 @@ const query = 'DELETE FROM products WHERE ID = ? ;';
 await connection.execute(query, [productId]);
 };
 
+const search = async (searchProduct) => {
+  const query = 'SELECT * FROM products WHERE name LIKE ?';
+  const searchPlaceholder = `%${searchProduct}%`;
+
+  const [searchedProduct] = await connection.execute(query, [searchPlaceholder]);
+  return searchedProduct;
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
   update,
   remove,
+  search,
 };

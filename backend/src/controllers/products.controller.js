@@ -47,10 +47,21 @@ const remove = async (req, res) => {
   }
 };
 
+const search = async (req, res) => {
+  try {
+    const searchProduct = req.query.q;
+    const { status, data } = await productsService.search(searchProduct);
+    return res.status(mapStatusHTTP(status)).json(data);
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
 module.exports = {
   findAllProducts,
   findProductById,
   insert,
   update,
   remove,
+  search,
 };

@@ -58,10 +58,17 @@ console.log(isProductValid);
   return { status: 'DELETED' };
 };
 
+const search = async (searchProduct) => {
+  const searchedProduct = await productModel.search(searchProduct);
+  return { status: 'SUCCESSFUL',
+  data: searchedProduct };
+  };
+  
 module.exports = {
   findAll,
   findById,
   insert,
   update,
   remove,
+  search,
 };
