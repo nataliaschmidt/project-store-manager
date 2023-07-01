@@ -4,6 +4,7 @@ const { salesModel, productModel } = require('../../../src/models');
 const { salesService } = require('../../../src/services');
 
 const { salesFromModel, newSaleFromService, salesFoundById } = require('../mocks/sales.mock');
+const { productByIdFromModel } = require('../mocks/products.mock');
 
 describe('Realizando testes - SALES SERVICE', function () {
   it('Recuperando todas as vendas com sucesso', async function () {
@@ -78,6 +79,97 @@ describe('Realizando testes - SALES SERVICE', function () {
     expect(responseService.status).to.be.equal('NOT_FOUND');
     expect(responseService.data).to.be.an('object');
     expect(responseService.data).to.be.deep.equal({ message: 'Sale not found' });
+  });
+
+  it('Editando a quantidade de um produto na venda com sucesso', async function () {
+    sinon.stub(salesModel, 'updateQuantity').resolves();
+    sinon.stub(productModel, 'findById').resolves(productByIdFromModel);
+    sinon.stub(salesModel, 'findById').resolves(salesFoundById);
+
+    const stubDate = new Date('2023-07-01T13:53:09.015Z');
+    sinon.stub(global, 'Date').returns(stubDate);
+
+    const update = {
+      saleId: 1,
+      productId: 1,
+      quantity: 50,
+    };
+    const responseService = await salesService.updateQuantity(update);
+    
+    expect(responseService.status).to.be.equal('SUCCESSFUL');
+    expect(responseService.data).to.be.an('object');
+    expect(responseService.data).to.be.deep.equal({
+      date: stubDate,
+      productId: 1,
+      quantity: 50,
+      saleId: 1,
+    });
+  });
+
+  it('Editando a quantidade de um produto passando um id de produto inválido', async function () {
+    sinon.stub(salesModel, 'updateQuantity').resolves();
+    sinon.stub(productModel, 'findById').resolves(undefined);
+   
+    const update = {
+      saleId: 1,
+      productId: 10,
+      quantity: 50,
+    };
+    const responseService = await salesService.updateQuantity(update);
+    
+    expect(responseService.status).to.be.equal('NOT_FOUND');
+    expect(responseService.data).to.be.an('object');
+    expect(responseService.data).to.be.deep.equal({ message: 'Product not found in sale' });
+  });
+
+  it('Editando a quantidade de um produto passando um id de venda inválido', async function () {
+    sinon.stub(salesModel, 'updateQuantity').resolves();
+    sinon.stub(productModel, 'findById').resolves(productByIdFromModel);
+    sinon.stub(salesModel, 'findById').resolves([]);
+
+    const update = {
+      saleId: 10,
+      productId: 1,
+      quantity: 50,
+    };
+    const responseService = await salesService.updateQuantity(update);
+    
+    expect(responseService.status).to.be.equal('NOT_FOUND');
+    expect(responseService.data).to.be.an('object');
+    expect(responseService.data).to.be.deep.equal({ message: 'Sale not found' });
+  });
+
+  it('Editando a quantidade de um produto na venda passando uma quantidade 0', async function () {
+    sinon.stub(salesModel, 'updateQuantity').resolves();
+    sinon.stub(productModel, 'findById').resolves(productByIdFromModel);
+    sinon.stub(salesModel, 'findById').resolves(salesFoundById);
+
+    const update = {
+      saleId: 1,
+      productId: 1,
+      quantity: 0,
+    };
+    const responseService = await salesService.updateQuantity(update);
+    
+    expect(responseService.status).to.be.equal('INVALID_VALUE');
+    expect(responseService.data).to.be.an('object');
+    expect(responseService.data).to.be.deep.equal({ message: '"quantity" must be greater than or equal to 1' });
+  });
+  
+  it('Editando a quantidade de um produto na venda não informando o campo de quantidade', async function () {
+    sinon.stub(salesModel, 'updateQuantity').resolves();
+    sinon.stub(productModel, 'findById').resolves(productByIdFromModel);
+    sinon.stub(salesModel, 'findById').resolves(salesFoundById);
+
+    const update = {
+      saleId: 1,
+      productId: 1,
+    };
+    const responseService = await salesService.updateQuantity(update);
+    
+    expect(responseService.status).to.be.equal('REQUIRED_VALUE');
+    expect(responseService.data).to.be.an('object');
+    expect(responseService.data).to.be.deep.equal({ message: '"quantity" is required' });
   });
 
   afterEach(function () {

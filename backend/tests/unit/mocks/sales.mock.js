@@ -73,6 +73,14 @@ const saleNotFound = {
   data: { message: 'Sale not found' },
 };
 
+const updateQuantity = {
+  status: 'SUCCESSFUL',
+  data: { date: '2023-07-01T01:37:10.864Z',
+  productId: 1,
+  quantity: 50,
+  saleId: 1 },
+};
+
 module.exports = {
   salesFromModel,
   salesSuccessful,
@@ -83,4 +91,5 @@ module.exports = {
   newSaleFromService,
   newSalesCreated,
   saleNotFound,
+  updateQuantity,
 };

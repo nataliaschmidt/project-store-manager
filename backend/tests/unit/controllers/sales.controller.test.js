@@ -7,7 +7,7 @@ chai.use(sinonChai);
 
 const { salesService } = require('../../../src/services');
 const { salesController } = require('../../../src/controllers');
-const { salesFromModel, salesSuccessful, salesByIdSuccessful, salesFoundById, salesByIdNotFound, newSalesCreated, newSaleFromService, saleNotFound } = require('../mocks/sales.mock');
+const { salesFromModel, salesSuccessful, salesByIdSuccessful, salesFoundById, salesByIdNotFound, newSalesCreated, newSaleFromService, saleNotFound, updateQuantity } = require('../mocks/sales.mock');
 
 describe('Realizando testes - SALES CONTROLLER', function () {
   it('Recuperando todas as vendas com sucesso - status 200', async function () {
@@ -102,6 +102,20 @@ const newSale = [
     await salesController.remove(req, res);
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith(saleNotFound.data);
+  });
+
+  it('Alterando a quantidade de uma venda com sucesso - status 200', async function () {
+    sinon.stub(salesService, 'updateQuantity').resolves(updateQuantity);
+
+    const req = { params: { saleId: 1, productId: 1 }, body: { quantity: 50 } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.updateQuantity(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(updateQuantity.data);
   });
 
   afterEach(function () {

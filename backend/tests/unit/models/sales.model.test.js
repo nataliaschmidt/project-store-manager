@@ -57,6 +57,21 @@ describe('Realizando testes - SALES MODEL', function () {
     expect(responseModel).to.be.deep.equal(undefined);
   });
 
+  it('Editando a quantidade de produto de uma venda', async function () {
+    const stubExecute = sinon.stub(connection, 'execute').resolves();
+
+    const update = {
+      saleId: 1,
+      productId: 1,
+      quantity: 20,
+    };
+
+    const responseModel = await salesModel.updateQuantity(update);
+
+    sinon.assert.calledOnce(stubExecute);
+    expect(responseModel).to.be.deep.equal();
+  });
+
   afterEach(function () {
     sinon.restore();
   });

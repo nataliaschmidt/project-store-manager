@@ -73,7 +73,7 @@ const validateIdSale = async (idSale) => {
 };
 
 const validateQuantity = (quantity) => {
-  if (quantity === 0) {
+  if (quantity <= 0) {
     return { status: 'INVALID_VALUE',
     data: { message: '"quantity" must be greater than or equal to 1' } };
   }
@@ -81,27 +81,20 @@ const validateQuantity = (quantity) => {
   if (!quantity) {
     return { status: 'REQUIRED_VALUE', data: { message: '"quantity" is required' } };
   }
-
-  if (quantity.length <= 0) {
-    return { status: 'INVALID_VALUE',
-    data: { message: '"quantity" must be greater than or equal to 1' } };
-  }
 };
 
 const updateQuantity = async (updateQuantityInfos) => {
 const errorQuantity = validateQuantity(updateQuantityInfos.quantity);
-if (errorQuantity) {
-  return errorQuantity; 
-}
+if (errorQuantity) return errorQuantity;
+
 const foundProduct = await validateIdProdutc(updateQuantityInfos.productId);
-if (foundProduct.status === 'NOT_FOUND') {
-  return foundProduct;
-}
+if (foundProduct.status === 'NOT_FOUND') return foundProduct;
+
 const foundSale = await validateIdSale(updateQuantityInfos.saleId);
-if (foundSale.status === 'NOT_FOUND') {
-  return foundSale;
-}
+if (foundSale.status === 'NOT_FOUND') return foundSale;
+
 await salesModel.updateQuantity(updateQuantityInfos);
+
 return { status: 'SUCCESSFUL',
 data: { 
   date: new Date(),
