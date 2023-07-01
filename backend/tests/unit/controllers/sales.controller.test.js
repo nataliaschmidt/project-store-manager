@@ -118,6 +118,63 @@ const newSale = [
     expect(res.json).to.have.been.calledWith(updateQuantity.data);
   });
 
+  it('Alterando a quantidade de uma venda com productId inválido - status 404', async function () {
+    sinon.stub(salesService, 'updateQuantity').resolves({ status: 'NOT_FOUND', data: { message: 'Product not found in sale' } });
+
+    const req = { params: { saleId: 1, productId: 10 }, body: { quantity: 50 } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.updateQuantity(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Product not found in sale' });
+  });
+
+  it('Alterando a quantidade de uma venda com saleId inválido - status 404', async function () {
+    sinon.stub(salesService, 'updateQuantity').resolves({ status: 'NOT_FOUND', data: { message: 'Sale not found' } });
+
+    const req = { params: { saleId: 10, productId: 1 }, body: { quantity: 50 } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.updateQuantity(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+  });
+
+  it('Alterando a quantidade de uma venda com quantidade inválida - status 422', async function () {
+    sinon.stub(salesService, 'updateQuantity').resolves({ status: 'INVALID_VALUE',
+    data: { message: '"quantity" must be greater than or equal to 1' } });
+
+    const req = { params: { saleId: 10, productId: 1 }, body: { quantity: 50 } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.updateQuantity(req, res);
+    expect(res.status).to.have.been.calledWith(422);
+    expect(res.json).to.have.been.calledWith({ message: '"quantity" must be greater than or equal to 1' });
+  });
+
+  it('Alterando a quantidade de uma venda sem passar quantidade - status 400', async function () {
+    sinon.stub(salesService, 'updateQuantity').resolves({ status: 'REQUIRED_VALUE', data: { message: '"quantity" is required' } });
+
+    const req = { params: { saleId: 1, productId: 1 }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.updateQuantity(req, res);
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith({ message: '"quantity" is required' });
+  });
+
   afterEach(function () {
     sinon.restore();
   });
