@@ -1,6 +1,10 @@
-# Blog API
+# Store Manager
 
-Desenvolvimento de uma API e um banco de dados para a produção de conteúdo para um blog, utilizando as práticas do REST e aplicando a Arquitetura de Software em camadas MSC (Model - Service - Controller)
+O objetivo do projeto é desenvolver uma API RESTfull utilizando a arquitetura em camadas MSC (Model-Service-Controller).
+
+A API desenvolvida é um sistema de gerenciamento de vendas na qual é possível criar, visualizar, deletar e atualizar produtos e vendas.
+
+Foram desenvolvidos os testes para garantir as funcionalidades das implementações.
 
 ## Tecnologias Utilizadas
 <hr>
@@ -8,8 +12,10 @@ Desenvolvimento de uma API e um banco de dados para a produção de conteúdo pa
 - Docker
 - Node.js
 - Express
-- Sequelize
-- JWT
+- MySQL
+- Mocha
+- Sinon
+- Chai
 
 ## Instruções
 <hr>
@@ -17,29 +23,21 @@ Desenvolvimento de uma API e um banco de dados para a produção de conteúdo pa
 - Clone este repositório.
 
 ```bash
-git clone git@github.com:nataliaschmidt/project-blogs-api.git
+git clone git@github.com:nataliaschmidt/project-store-manager.git
 ```
 - Acesse o diretório do porjeto e instale suas dependências
 ```bash
 npm install
 ```
 
-- Inicie os containers do compose `blogs_api` e `blogs_api_db`
+- Inicie os containers do compose `backend` e `db`
 ```bash
 docker-compose up -d
 ```
 
-Acesse o terminal interativo do container criado pelo compose
-```bash
-docker exec -it blogs_api bash
-```
+A aplicação estará disponível em `http://localhost:3001` em modo de desenvolvimento
 
-Instale as dependências dentro do container
+É possível ver os logs da aplicação com 
 ```bash
-npm install
-```
-
-Inicie o servidor dentro do container
-```bash
-npm start
+docker logs -n 10 -f store_manager
 ```
