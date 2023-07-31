@@ -1,6 +1,6 @@
 # Talker Manager
 
-O objetivo do projeto é desenvolver uma API RESTfull utilizando a arquitetura em camadas.
+O objetivo do projeto é desenvolver uma API RESTfull utilizando a arquitetura em camadas MSC (Model-Service-Controller).
 
 A API desenvolvida é um sistema de gerenciamento de vendas na qual é possível criar, visualizar, deletar e atualizar produtos e vendas.
 
@@ -22,7 +22,7 @@ Foram desenvolvidos os testes para garantir as funcionalidades das implementaç�
 - Clone este repositório.
 
 ```bash
-git clone git@github.com:nataliaschmidt/project-talker-manager.git
+git clone git@github.com:nataliaschmidt/project-store-manager.git
 ```
 - Acesse o diretório do porjeto e instale suas dependências
 ```bash
