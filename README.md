@@ -1,4 +1,4 @@
-# Talker Manager
+# Store Manager
 
 O objetivo do projeto é desenvolver uma API RESTfull utilizando a arquitetura em camadas MSC (Model-Service-Controller).
 
@@ -13,6 +13,7 @@ Foram desenvolvidos os testes para garantir as funcionalidades das implementaç�
 - Node.js
 - Express
 - MySQL
+- Mocha
 - Sinon
 - Chai
 
